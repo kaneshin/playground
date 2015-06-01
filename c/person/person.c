@@ -58,7 +58,10 @@ new_person()
 
     internal_person *inter = new_internal_person();
     if (inter == NULL)
+    {
+        free(p);
         return NULL;
+    }
 
     p->_internal = inter;
     p->set_name = person_set_name;
