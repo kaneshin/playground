@@ -1,6 +1,6 @@
 SRCS = \
-	main.c \
-	person.c
+	active_record.c \
+	main.c
 
 OBJS = $(subst .c,.o,$(SRCS))
 
