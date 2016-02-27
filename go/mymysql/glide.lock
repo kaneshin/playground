@@ -1,0 +1,13 @@
+hash: 58d7455458b07eb248617fc5912c77f8b06891c6abbcbbba17ea68e7cc473d78
+updated: 2016-02-22T10:43:21.158755732Z
+imports:
+- name: github.com/ziutek/mymysql
+  version: e5d54ebfda3f8a15e7b192b65c2aa10cb4fd7e04
+  subpackages:
+  - /godrv
+  - godrv
+  - '...'
+  - mysql
+  - thrsafe
+  - native
+devImports: []

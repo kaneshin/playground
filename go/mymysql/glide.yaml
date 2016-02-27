@@ -1,0 +1,7 @@
+package: .
+import:
+- package: github.com/ziutek/mymysql
+  subpackages:
+  - /godrv
+  - godrv
+  - '...'
