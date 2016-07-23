@@ -2,6 +2,7 @@ package bench
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"strings"
 	"testing"
@@ -31,5 +32,26 @@ func BenchmarkConcatBuffer(b *testing.B) {
 		}
 		whereInIDs := byteWhereInIDs.String()
 		_ = whereInIDs[0:(len(whereInIDs) - 1)]
+	}
+}
+
+var jsonData = []byte(`{"foo":true,"bar":1,"hoge":"hogehoge"}`)
+var data map[string]interface{}
+
+func BenchmarkUnmarshal(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		json.Unmarshal(jsonData, &data)
+	}
+}
+
+var buf bytes.Buffer
+
+func init() {
+	buf.Write([]byte(`{"foo":true,"bar":1,"hoge":"hogehoge"}`))
+}
+
+func BenchmarkDecoder(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		json.NewDecoder(&buf).Decode(&data)
 	}
 }
