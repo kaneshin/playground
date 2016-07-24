@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"time"
 
+	stats "github.com/fukata/golang-stats-api-handler"
 	"github.com/kaneshin/playground/go/concurrency-pattern/payload"
 )
 
@@ -17,10 +18,17 @@ func init() {
 		num := 0
 		for {
 			if n := runtime.NumGoroutine(); n != num {
+				s := stats.GetStats()
+				fmt.Printf("Stats\n")
+				fmt.Printf(" |`-GoroutineNum: %v\n", s.GoroutineNum)
+				fmt.Printf(" |`-Memory: Alloc %v, Mallocs %v, Frees %v\n",
+					float64(s.MemoryAlloc)/1000.0, float64(s.MemoryMallocs)/1000.0, float64(s.MemoryFrees)/1000.0)
+				fmt.Printf(" |`-Heap: Alloc %v, Sys %v, Idle %v\n",
+					float64(s.HeapAlloc)/1000.0, float64(s.HeapSys)/1000.0, float64(s.HeapIdle)/1000.0)
+				fmt.Printf("  `-GC: Num %v, PerSecond %v, Pause %v\n", s.GcNum, s.GcPerSecond, s.GcPause)
 				num = n
-				fmt.Printf("The number of goroutines: %d\n", num)
 			}
-			time.Sleep(10 * time.Millisecond)
+			time.Sleep(1000 * time.Millisecond)
 		}
 	}()
 }
