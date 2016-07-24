@@ -1,0 +1,19 @@
+{
+    "version": "1",
+    "token": "foo",
+    "instances": [{
+        "url": "http://placehold.it/350x100"
+    },
+    {
+        "url": "http://placehold.it/350x200"
+    },
+    {
+        "url": "http://placehold.it/350x300"
+    },
+    {
+        "url": "http://placehold.it/350x400"
+    },
+    {
+        "url": "http://placehold.it/350x500"
+    }]
+}
