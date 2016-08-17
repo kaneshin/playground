@@ -43,6 +43,7 @@ func NewDispatcher(opt DispatcherOptions) *Dispatcher {
 		queue: make(chan interface{}, opt.QueueCapacity),
 		quit:  make(chan struct{}),
 	}
+	d.workers = make([]*worker, cap(d.pool))
 	for i := 0; i < cap(d.pool); i++ {
 		w := worker{
 			dispatcher: d,
@@ -53,7 +54,7 @@ func NewDispatcher(opt DispatcherOptions) *Dispatcher {
 		if cap(w.data) > 1 {
 			w.signal = make(chan struct{})
 		}
-		d.workers = append(d.workers, &w)
+		d.workers[i] = &w
 		w.start()
 	}
 	if opt.Func != nil {
