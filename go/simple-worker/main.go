@@ -47,7 +47,6 @@ func NewDispatcher() *Dispatcher {
 			quit:       make(chan struct{}),
 		}
 		d.workers[i] = &w
-		w.start()
 	}
 	return d
 }
@@ -60,6 +59,9 @@ func (d *Dispatcher) Add(v interface{}) {
 
 // Start starts the specified dispatcher but does not wait for it to complete.
 func (d *Dispatcher) Start() {
+	for _, w := range d.workers {
+		w.start()
+	}
 	go func() {
 		for {
 			select {
