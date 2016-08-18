@@ -55,7 +55,6 @@ func NewDispatcher(opt DispatcherOptions) *Dispatcher {
 			w.signal = make(chan struct{})
 		}
 		d.workers[i] = &w
-		w.start()
 	}
 	if opt.Func != nil {
 		d.SetFunc(opt.Func)
@@ -78,6 +77,9 @@ func (d *Dispatcher) SetFunc(f func(interface{})) {
 
 // Start starts the specified dispatcher but does not wait for it to complete.
 func (d *Dispatcher) Start() {
+	for _, w := range d.workers {
+		w.start()
+	}
 	go func() {
 		for {
 			select {
