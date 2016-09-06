@@ -20,7 +20,6 @@ var (
 )
 
 func init() {
-	// Create shared configuration of AWS.
 	config = aws.NewConfig().
 		WithCredentials(credentials.NewEnvCredentials()).
 		WithHTTPClient(http.DefaultClient).
@@ -29,20 +28,8 @@ func init() {
 		WithLogLevel(aws.LogOff)
 }
 
-// NewSQS creates a new instance of the SQS client with a session.
-// If additional configuration is needed for the client instance use the optional
-// aws.Config parameter to add your extra config.
-//
-// Example:
-//     // Create a SQS client with additional configuration
-//     svc := NewSQS(aws.NewConfig().WithRegion("us-west-2"))
-func NewSQS(c *aws.Config) *sqs.SQS {
-	sess := session.New(config, c)
-	return sqs.New(sess, config, c)
-}
-
 func main() {
-	// Initialize the SQS service.
+	// initialize the SQS service.
 	svc := NewSQS(aws.NewConfig().WithRegion(region))
 
 	var url string
@@ -118,4 +105,16 @@ func main() {
 			fmt.Println("Delete:", resp)
 		}
 	}
+}
+
+// NewSQS creates a new instance of the SQS client with a session.
+// If additional configuration is needed for the client instance use the optional
+// aws.Config parameter to add your extra config.
+//
+// Example:
+//     // Create a SQS client with additional configuration
+//     svc := NewSQS(aws.NewConfig().WithRegion("us-west-2"))
+func NewSQS(c *aws.Config) *sqs.SQS {
+	sess := session.New(config, c)
+	return sqs.New(sess, config, c)
 }
