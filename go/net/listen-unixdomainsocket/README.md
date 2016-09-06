@@ -3,6 +3,10 @@
 ## Usage
 
 ```shell
+echo d /var/run/gopher 0755 `whoami` `whoami` - > /etc/tmpfiles.d/gopher.conf
+systemd-tmpfiles --create /etc/tmpfiles.d/gopher.conf
+systemctl daemon-reload
+
 go run main.go &
 echo -en 'GET / HTTP/1.0\r\n\r\n' | socat stdio UNIX-CONNECT:/var/run/gopher/go.sock
 
