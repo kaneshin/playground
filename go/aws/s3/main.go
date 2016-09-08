@@ -46,7 +46,7 @@ func main() {
 		Key:    aws.String(key),
 	}
 
-	if len(*byteRange) == 0 {
+	if len(*byteRange) > 0 {
 		// Downloads the specified range bytes of an object. For more information about
 		// the HTTP Range header, go to http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.35.
 		// Range *string `location:"header" locationName:"Range" type:"string"`
@@ -54,7 +54,7 @@ func main() {
 	}
 
 	req, output := svc.GetObjectRequest(&input)
-	if err := req.Send(); err == nil {
+	if err := req.Send(); err != nil {
 		log.Fatalf("error %v", err)
 	}
 	defer output.Body.Close()
@@ -64,7 +64,7 @@ func main() {
 		log.Fatalf("error %v", err)
 	}
 
-	file, err := os.Create(filepath.Join(tempdir, key))
+	file, err := os.Create(filepath.Join(tempdir, filepath.Base(key)))
 	if err != nil {
 		log.Fatalf("error %v", err)
 	}
@@ -75,6 +75,8 @@ func main() {
 	if _, err := file.Write(b); err != nil {
 		log.Fatalf("error %v", err)
 	}
+
+	log.Printf("write file: %v", file.Name())
 }
 
 // NewS3 creates a new instance of the S3 client with a session.
