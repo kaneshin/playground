@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// pingHandler returns just "pong" string.
 func pingHandler() func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain")
@@ -13,6 +14,7 @@ func pingHandler() func(http.ResponseWriter, *http.Request) {
 	}
 }
 
+// echoHandler returns a 'msg' query parameter string.
 func echoHandler() func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain")
