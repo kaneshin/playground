@@ -1,0 +1,16 @@
+#!/bin/sh
+
+which aspell > /dev/null
+if [ ! $? -eq 0 ] ; then
+  exit 0
+fi
+
+while read oldrev newrev refname
+do
+  misspelled=`git log --format=%B -n 1 "$newrev" | aspell list`
+  if [ -n "${misspelled}" ] ; then
+    echo >&2 "Possible misspelled words in the commit message:"
+    for e in $misspelled; do echo >&2 " - ${e}"; done
+    exit 1
+  fi
+done
