@@ -39,3 +39,58 @@ func Benchmark_Divide(b *testing.B) {
 		}
 	})
 }
+
+type Packet struct {
+	Name string
+	Data interface{}
+}
+
+var name string
+var data interface{}
+
+func (p Packet) Send() {
+	name = p.Name
+	data = p.Data
+}
+
+func Benchmark_PacketSend(b *testing.B) {
+	const N = 1000000
+	b.Run("v1", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			for j := 0; j < N; j++ {
+				Packet{
+					Name: "foo",
+					Data: "bar",
+				}.Send()
+			}
+		}
+	})
+
+	b.Run("v2", func(b *testing.B) {
+		p := Packet{
+			Name: "foo",
+			Data: "bar",
+		}
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			for j := 0; j < N; j++ {
+				p.Send()
+			}
+		}
+	})
+
+	b.Run("v3", func(b *testing.B) {
+		p := Packet{
+			Name: "foo",
+			Data: "bar",
+		}
+		b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			for j := 0; j < N; j++ {
+				p := p
+				p.Data = j
+				p.Send()
+			}
+		}
+	})
+}
