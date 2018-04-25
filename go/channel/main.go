@@ -1,32 +1,40 @@
 package main
 
 import (
-	"flag"
-	"fmt"
-	"log"
+	"context"
 	"net/http"
+	"time"
 )
 
-var (
-	port = flag.String("port", "8080", "port")
-)
+func concat(ctx context.Context, a, b string) string {
+	time.Sleep(2 * time.Second)
+	time
+	return a + " " + b
+}
 
 func main() {
-	hash := map[string]interface{}{}
-
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		switch r.Method {
-		case "GET":
-			id := r.FormValue("id")
-			w.Write([]byte(id))
-		case "POST":
-		case "PUT":
+		ctx1, cancel := context.WithCancel(r.Context())
+
+		var str1, str2, str3 string
+
+		ctx2, _ := context.WithCancel(ctx1)
+		go func(ctx context.Context) {
+			str1 = concat(ctx, "Hello", "world")
+		}(ctx2)
+
+		go func(ctx context.Context) {
+			str2 = concat(ctx, "こんにちは", "世界")
+		}(ctx2)
+
+		select {
+		case <-ctx2.Done():
+			str3 = concat(ctx1, str1, str2)
 		}
+
+		w.Write([]byte(str3))
+		cancel()
 	})
 
-	if *port == "" {
-		*port = "8080"
-	}
-
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", *port), nil))
+	http.ListenAndServe(":9090", nil)
 }
