@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package protobuf;
+
+// import "github.com/golang/protobuf/ptypes/timestamp/timestamp.proto";
+import "google/protobuf/timestamp.proto";
+
+message User {
+    int64 id = 1;
+    string first_name = 2;
+    string last_name = 3;
+
+    enum EmailType {
+        HOME = 0;
+        WORK = 1;
+        MOBILE = 2;
+    }
+    message Email {
+        string address = 1;
+        EmailType type = 2;
+    }
+    repeated Email emails = 4;
+
+    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp updated_at = 6;
+}

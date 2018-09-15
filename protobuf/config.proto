@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package proto;
-
-message Parameter {
-    string key = 1;
-    string value = 2;
-}
