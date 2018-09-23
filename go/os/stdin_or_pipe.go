@@ -13,37 +13,22 @@ func init() {
 }
 
 func main() {
-	fi, err := os.Stdin.Stat()
-	if err != nil {
-		panic(err)
+	var name string
+	if args := flag.Args(); len(args) > 0 {
+		name = args[0]
 	}
 
 	var r io.Reader
-	if fi.Mode()&os.ModeNamedPipe == os.ModeNamedPipe {
-		// mode named pipe
+	switch name {
+	case "", "-":
 		r = os.Stdin
-	} else {
-		args := flag.Args()
-		switch len(args) {
-		case 0:
-		case 1:
-
+	default:
+		f, err := os.Open(name)
+		if err != nil {
+			panic(err)
 		}
-		if len(args) == 0 {
-			r = os.Stdin
-		} else {
-			name := args[0]
-			if name == "-" {
-				r = os.Stdin
-			} else {
-				f, err := os.Open(name)
-				if err != nil {
-					panic(err)
-				}
-				defer f.Close()
-				r = f
-			}
-		}
+		defer f.Close()
+		r = f
 	}
 
 	b, err := ioutil.ReadAll(r)
