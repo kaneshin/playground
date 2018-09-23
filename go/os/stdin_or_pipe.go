@@ -24,15 +24,25 @@ func main() {
 		r = os.Stdin
 	} else {
 		args := flag.Args()
+		switch len(args) {
+		case 0:
+		case 1:
+
+		}
 		if len(args) == 0 {
 			r = os.Stdin
 		} else {
-			f, err := os.Open(args[0])
-			if err != nil {
-				panic(err)
+			name := args[0]
+			if name == "-" {
+				r = os.Stdin
+			} else {
+				f, err := os.Open(name)
+				if err != nil {
+					panic(err)
+				}
+				defer f.Close()
+				r = f
 			}
-			defer f.Close()
-			r = f
 		}
 	}
 
