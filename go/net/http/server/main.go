@@ -26,12 +26,6 @@ func main() {
 		w.Write([]byte(csv))
 	})
 
-	http.HandleFunc("/download/sample", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add("content-type", "text/csv")
-		w.Header().Add("content-disposition", "inline; filename=\"foobar.csv\"")
-		w.Write([]byte(csv))
-	})
-
 	http.HandleFunc("/octet-stream/sample", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("content-type", "application/octet-stream")
 		w.Header().Add("content-disposition", "inline; filename=\"foobar.csv\"")
